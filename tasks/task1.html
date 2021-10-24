@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <script src="task1.js"></script>
+    <style>
+      .folder {
+        color: red;
+      }
+      span {
+        display: block;
+        width: 50px;
+        height: 50px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        cursor: pointer;
+      }
+      .closed {
+        background-image: url('./folder_black_24dp.svg');
+      }
+      .opened {
+        background-image: url('./folder_open_black_24dp.svg');
+      }
+      .file {
+        background-image: url(./description_black_24dp.svg);
+      }
+      p {
+        margin-top: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const body = document.body;
+      const container = document.createElement('div');
+      container.classList.add('container');
+      console.log(structure);
+      body.appendChild(container);
+      let prevContainer = container;
+      function folderClick(div) {
+        return () => {
+          if (Array.from(div.children[0].classList).includes('closed')) {
+            div.children[0].classList.remove('closed');
+            div.children[0].classList.add('opened');
+            div.nextSibling.style.display = 'block';
+          } else {
+            div.children[0].classList.remove('opened');
+            div.children[0].classList.add('closed');
+            div.nextSibling.style.display = 'none';
+          }
+        }
+      }
+      function createStructure(structure, prevContainer) {
+        for (let i in structure) {
+          const newFile = document.createElement('div');
+          prevContainer.appendChild(newFile);
+          if (structure[i].folder) {
+            newFile.innerHTML = (`<span class="closed"></span>
+                                <p>${structure[i].title}</p>`);
+            newFile.classList.add('folder');
+            newFile.onclick = folderClick(newFile);
+            const childrenDiv = document.createElement('div');
+            childrenDiv.style.display = 'none';
+            childrenDiv.style['margin-left'] = '40px';
+            prevContainer.appendChild(childrenDiv);
+            createStructure(structure[i].children, childrenDiv);
+          } else {
+            newFile.innerHTML = (`<span class="file"></span>
+                                <p>${structure[i].title}</p>`);
+          }
+        }
+      }
+      createStructure(structure, prevContainer);
+    </script>
+  </body>
+</html>
