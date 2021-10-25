@@ -1,31 +1,6 @@
 <html>
   <head>
     <script src="task1.js"></script>
-    <style>
-      .folder {
-        color: red;
-      }
-      span {
-        display: block;
-        width: 50px;
-        height: 50px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        cursor: pointer;
-      }
-      .closed {
-        background-image: url('./folder_black_24dp.svg');
-      }
-      .opened {
-        background-image: url('./folder_open_black_24dp.svg');
-      }
-      .file {
-        background-image: url(./description_black_24dp.svg);
-      }
-      p {
-        margin-top: 3px;
-      }
-    </style>
   </head>
   <body>
     <script>
@@ -39,10 +14,12 @@
           if (Array.from(div.children[0].classList).includes('closed')) {
             div.children[0].classList.remove('closed');
             div.children[0].classList.add('opened');
+            div.children[0].style['background-image'] = 'url(./folder_open_black_24dp.svg)';
             div.nextSibling.style.display = 'block';
           } else {
             div.children[0].classList.remove('opened');
             div.children[0].classList.add('closed');
+            div.children[0].style['background-image'] = 'url(./folder_black_24dp.svg)';
             div.nextSibling.style.display = 'none';
           }
         }
@@ -51,10 +28,23 @@
         for (let i in structure) {
           const newFile = document.createElement('div');
           prevContainer.appendChild(newFile);
+          const span = document.createElement('span');
+          span.style.display = 'block';
+          span.style.width = '50px';
+          span.style.height = '50px';
+          span.style['background-size'] = 'cover';
+          span.style['background-repeat'] = 'no-repeat';
+          span.style.cursor = 'pointer';
+          const p = document.createElement('p');
+          p.innerText = structure[i].title;
+          p.style.marginTop = '3px';
+          newFile.appendChild(span);
+          newFile.appendChild(p);
           if (structure[i].folder) {
-            newFile.innerHTML = (`<span class="closed"></span>
-                                <p>${structure[i].title}</p>`);
             newFile.classList.add('folder');
+            newFile.style.color = 'red';
+            span.classList.add('closed');
+            span.style['background-image'] = 'url(./folder_black_24dp.svg)';
             newFile.onclick = folderClick(newFile);
             const childrenDiv = document.createElement('div');
             childrenDiv.style.display = 'none';
@@ -62,8 +52,9 @@
             prevContainer.appendChild(childrenDiv);
             createStructure(structure[i].children, childrenDiv);
           } else {
-            newFile.innerHTML = (`<span class="file"></span>
-                                <p>${structure[i].title}</p>`);
+            span.classList.add('file');
+            span.style['background-image'] = 'url(./description_black_24dp.svg)';
+            p.style.marginTop = '3px';
           }
         }
       }
