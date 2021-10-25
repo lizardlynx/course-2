@@ -1,0 +1,150 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script>
+      const tanks = [[ 'conqueror gun', './images/tanks/conqueror_gun.png', 'germany', {level: 10, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['e-100', './images/tanks/e-100.png', 'uk', {level: 11, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['fv215b', './images/tanks/fv215b.png', 'usa', {level: 12, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['maus', './images/tanks/maus.png', 'ussr', {level: 9, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['object 140', './images/tanks/object_140.png', 'germany', {level: 10, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['t57', './images/tanks/t57.png', 'uk', {level: 8, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['t62a', './images/tanks/t62a.png', 'usa', {level: 7, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}],
+                      ['t110e5', './images/tanks/t110e5.png', 'ussr', {level: 6, damage: 420, breoning: 264, 'attack speed': 9.09, 'time of targeting': 2.1, ammunition: 50}]];
+      const flags = { 'germany': './images/countries/germany.png',
+                      'uk': './images/countries/uk.png',
+                      'usa': './images/countries/usa.png',
+                      'ussr': './images/countries/ussr.png'};
+      const body = document.body;
+      const root = document.createElement('div');
+      root.setAttribute('id', 'root');
+      body.appendChild(root);
+      // first page
+      function createFirstPage() {
+        root.textContent = '';
+        const thumbnails = document.createElement('div');
+        thumbnails.classList.add('thumbnails');
+        thumbnails.style['margin-left'] = '40px';
+        root.appendChild(thumbnails);
+        const headline = document.createElement('h1');
+        headline.innerText = 'Most popular tanks';
+        thumbnails.appendChild(headline);
+        const container = document.createElement('div');
+        thumbnails.appendChild(container);
+        container.style.display = 'flex';
+        container.style.flexDirection = 'row';
+        container.style.flexWrap = 'wrap';
+        for (let i = 0; i < 8; i++) {
+          const tankCont = document.createElement('a');
+          tankCont.setAttribute('href', '#' + i);
+          tankCont.style.color = 'black';
+          tankCont.style.textDecoration = 'none';
+          tankCont.style.padding = '20px';
+          tankCont.setAttribute('data-toggle', 'tooltip');
+          tankCont.setAttribute('title', 'Click to details');
+          tankCont.onmouseover = () => tankCont.style['background-color'] = 'lightgray';
+          tankCont.onmouseleave = () => tankCont.style['background-color'] = 'white';
+          const photo = document.createElement('img');
+          photo.style['background-size'] = 'cover';
+          photo.style.width = '300px';
+          const info = document.createElement('div');
+          info.style.display = 'flex';
+          info.style.flexDirection = 'row';
+          const flag = document.createElement('img');
+          flag.setAttribute('data-toggle', 'tooltip');
+          flag.setAttribute('title', tanks[i][2].toUpperCase());
+          const level = document.createElement('p');
+          level.innerText = tanks[i][3].level;
+          level.style.margin = '0 5px';
+          const name = document.createElement('p');
+          name.setAttribute('data-toggle', 'tooltip');
+          name.setAttribute('title', tanks[i][0].toUpperCase());
+          name.style.margin = '0 5px';
+          photo.src = tanks[i][1];
+          flag.src = flags[tanks[i][2]];
+          name.innerText = tanks[i][0].toUpperCase();
+          tankCont.appendChild(photo);
+          info.appendChild(flag);
+          info.appendChild(level);
+          info.appendChild(name);
+          tankCont.appendChild(info);
+          container.appendChild(tankCont);
+        }
+      }
+      //second page
+      function createTankDetailsPage(id) {
+        root.textContent = '';
+        const tankDetails = document.createElement('div');
+        tankDetails.classList.add('tank-details');
+        root.appendChild(tankDetails);
+        const headline = document.createElement('div');
+        headline.style.display = 'flex';
+        headline.style.flexDirection = 'row';
+        headline.style['align-items'] = 'center';
+        const headText = document.createElement('h1');
+        headText.style.margin = '0 5px';
+        headText.innerText = tanks[id][0].toUpperCase() + '(' + tanks[id][3].level + ')';
+        const flag = document.createElement('img');
+        flag.src = flags[tanks[id][2]];
+        flag.setAttribute('data-toggle', 'tooltip');
+        flag.setAttribute('title', tanks[id][2].toUpperCase());
+        const details = document.createElement('div');
+        details.style.display = 'flex';
+        details.style.flexDirection = 'row';
+        const photoPreview = document.createElement('div');
+        photoPreview.style.flexGrow = '1';
+        const preview = document.createElement('h2');
+        preview.innerText = 'Preview';
+        const photo = document.createElement('img');
+        photo.src = tanks[id][1];
+        const detailsTable = document.createElement('div');
+        const characteristics = document.createElement('h2');
+        characteristics.innerText = 'Characteristics';
+        const table = document.createElement('table');
+        table.style['border-collapse'] = 'collapse';
+        table.style.border = '1px solid black';
+        detailsTable.style.flexGrow = '2';
+        table.style.width = '90%';
+        for (let key in tanks[id][3]) {
+          const tr = document.createElement('tr');
+          tr.style.border = '1px solid black';
+          const td1 = document.createElement('td');
+          td1.style.border = '1px solid black';
+          td1.style.padding = '5px';
+          const td2 = document.createElement('td');
+          td2.style.border = '1px solid black';
+          td2.style.padding = '10px';
+          td1.innerText = key;
+          td2.innerText = tanks[id][3][key];
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          table.appendChild(tr);
+        }
+        const a = document.createElement('a');
+        a.innerText = 'Back to list view';
+        a.setAttribute('href', '');
+        headline.appendChild(flag);
+        headline.appendChild(headText);
+        tankDetails.appendChild(headline);
+        tankDetails.appendChild(details);
+        details.appendChild(photoPreview);
+        photoPreview.appendChild(preview);
+        photoPreview.appendChild(photo);
+        details.appendChild(detailsTable);
+        detailsTable.appendChild(characteristics);
+        detailsTable.appendChild(table);
+        tankDetails.appendChild(a);
+      }
+      createFirstPage();
+      window.onhashchange = () => {
+        const hash = window.location.hash;
+        const id = +(hash.slice(1));
+        if(hash === '') {
+          createFirstPage();
+        } else if (id >= 0 && id <= 8){
+          createTankDetailsPage(id);
+        }
+      };
+    </script>
+  </body>
+</html>
